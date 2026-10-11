@@ -8,7 +8,7 @@ import {
 } from "@/lib/utils";
 
 async function getProduct(slug: string): Promise<Product | null> {
-  // There is no slug endpoint, so fetch all products and match the slug
+  
   const res = await fetch(
     "https://api.api-store.workers.dev/api/bazardor/products",
     { next: { revalidate: 60 } }
@@ -17,6 +17,16 @@ async function getProduct(slug: string): Promise<Product | null> {
   const data = await res.json();
   const products: Product[] = Array.isArray(data) ? data : data?.data || [];
   return products.find((p) => p.slug === slug) || null;
+}
+
+function formatAvg(n: number): string {
+  if (Number.isInteger(n)) return formatPrice(n);
+  return toBengaliNumber(
+    n.toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  );
 }
 
 export default async function ProductPage({
@@ -32,8 +42,9 @@ export default async function ProductPage({
   }
 
   const markets = product.markets || [];
+  const unitShort = getUnitBn(product.unit).replace("প্রতি ", "");
 
-  // Min, Max, Average from the market data
+  
   const minPrice = markets.length
     ? Math.min(...markets.map((m) => m.min))
     : product.today;
@@ -47,6 +58,11 @@ export default async function ProductPage({
       )
     : product.today;
 
+  const lowestMarket = markets.find((m) => m.min === minPrice)?.market;
+  const highestMarket = markets.find((m) => m.max === maxPrice)?.market;
+
+  
+  const diff = Math.abs(product.today - product.yesterday);
   const pct = toBengaliNumber(Math.abs(product.change.pct).toFixed(1));
   const badgeText =
     product.change.dir === "up"
@@ -89,9 +105,21 @@ export default async function ProductPage({
             <h1 className="text-xl md:text-2xl font-bold text-gray-900">
               {product.nameBn}
             </h1>
+            {/* Market summary line */}
             <p className="text-xs text-gray-500 mt-1">
-              বাজারভিত্তিক সর্বশেষ দাম ও বিস্তারিত তথ্য
+              {product.change.dir === "flat" || diff === 0 ? (
+                <>গতকালের তুলনায় আজ দাম অপরিবর্তিত</>
+              ) : (
+                <>
+                  গতকালের তুলনায় আজ দাম{" "}
+                  <span className="font-semibold text-gray-800">
+                    {product.change.dir === "up" ? "বেড়েছে" : "কমেছে"}
+                  </span>{" "}
+                  · {formatAvg(diff)} টাকা
+                </>
+              )}
             </p>
+            {/* Category + unit tags */}
             <div className="flex flex-wrap gap-2 mt-2">
               <span className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-md">
                 {product.categoryIcon} {product.categoryNameBn}
@@ -103,55 +131,53 @@ export default async function ProductPage({
           </div>
         </div>
 
-        {/* Today's price box */}
+        
         <div className="bg-green-50/60 border border-green-100 rounded-xl px-5 py-3 text-center sm:min-w-36">
           <p className="text-xs text-gray-500">আজকের দাম</p>
-          <p className="text-2xl font-bold text-gray-900">
+          <p className="text-3xl font-bold text-gray-900">
             {formatPrice(product.today)}
           </p>
-          <p className="text-xs text-gray-500">
-            টাকা / {getUnitBn(product.unit).replace("প্রতি ", "")}
-          </p>
+          <p className="text-xs text-gray-500">টাকা / {unitShort}</p>
           <p className={`text-xs font-semibold mt-1 ${badgeColor}`}>
             {badgeText}
           </p>
         </div>
       </div>
 
-      {/* Market summary */}
+      {/* Price summary */}
       <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-4">
         <h2 className="text-base font-bold text-gray-800 mb-3">
-          মার্কেট সারসংক্ষেপ
+          দামের সারসংক্ষেপ
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="border border-gray-100 rounded-xl p-4">
             <p className="text-xs text-gray-500">সর্বনিম্ন দাম</p>
             <p className="text-xl font-bold text-green-600">
               {formatPrice(minPrice)}{" "}
-              <span className="text-sm font-normal">টাকা</span>
+              <span className="text-sm font-normal text-gray-700">টাকা</span>
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              সব বাজারের মধ্যে সর্বনিম্ন
+              সবচেয়ে কম দামের বাজার{lowestMarket ? `: ${lowestMarket}` : ""}
             </p>
           </div>
           <div className="border border-gray-100 rounded-xl p-4">
             <p className="text-xs text-gray-500">সর্বোচ্চ দাম</p>
             <p className="text-xl font-bold text-red-600">
               {formatPrice(maxPrice)}{" "}
-              <span className="text-sm font-normal">টাকা</span>
+              <span className="text-sm font-normal text-gray-700">টাকা</span>
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              সব বাজারের মধ্যে সর্বোচ্চ
+              সবচেয়ে বেশি দামের বাজার{highestMarket ? `: ${highestMarket}` : ""}
             </p>
           </div>
           <div className="border border-gray-100 rounded-xl p-4">
             <p className="text-xs text-gray-500">গড় দাম</p>
-            <p className="text-xl font-bold text-gray-800">
+            <p className="text-xl font-bold text-green-600">
               {formatPrice(avgPrice)}{" "}
-              <span className="text-sm font-normal">টাকা</span>
+              <span className="text-sm font-normal text-gray-700">টাকা</span>
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              সব বাজারের গড় দাম
+              প্রতি {unitShort}-এর হিসাবে
             </p>
           </div>
         </div>
@@ -187,7 +213,7 @@ export default async function ProductPage({
                   key={`${m.market}-${i}`}
                   className={i % 2 === 0 ? "bg-white" : "bg-green-50/40"}
                 >
-                  <td className="border border-gray-300 px-3 py-2">
+                  <td className="border border-gray-300 px-3 py-2 font-medium">
                     {m.market}
                   </td>
                   <td className="border border-gray-300 px-3 py-2">
@@ -199,8 +225,8 @@ export default async function ProductPage({
                   <td className="border border-gray-300 px-3 py-2 text-right whitespace-nowrap">
                     {formatPrice(m.max)} টাকা
                   </td>
-                  <td className="border border-gray-300 px-3 py-2 text-right whitespace-nowrap font-semibold">
-                    {formatPrice(Math.round((m.min + m.max) / 2))} টাকা
+                  <td className="border border-gray-300 px-3 py-2 text-right whitespace-nowrap font-bold">
+                    {formatAvg((m.min + m.max) / 2)} টাকা
                   </td>
                 </tr>
               ))}

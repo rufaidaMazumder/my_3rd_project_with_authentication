@@ -14,7 +14,7 @@ function SignInForm() {
   const searchParams = useSearchParams();
   const reason = searchParams.get("reason");
 
-  // Toast for protected-route redirect
+  
   useEffect(() => {
     if (reason === "login-required") {
       toast.error("এই পেজ দেখতে সাইন ইন করুন", { id: "login-required" });
@@ -59,7 +59,7 @@ function SignInForm() {
   return (
     <div className="max-w-md mx-auto px-4 py-10">
       <div className="bg-white border border-gray-100 rounded-2xl p-6 md:p-8">
-        {/* Title */}
+        
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900">সাইন ইন</h1>
           <p className="text-gray-500 text-sm mt-1">
@@ -67,7 +67,7 @@ function SignInForm() {
           </p>
         </div>
 
-        {/* Email / Password form */}
+        
         <form onSubmit={handleEmailSignIn} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -108,10 +108,10 @@ function SignInForm() {
           </button>
         </form>
 
-        {/* Divider */}
+        
         <div className="divider text-gray-400 text-xs my-5">অথবা</div>
 
-        {/* Social login */}
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
             type="button"

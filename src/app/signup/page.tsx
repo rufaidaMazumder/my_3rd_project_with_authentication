@@ -17,7 +17,7 @@ export default function SignUpPage() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation toasts
+    
     if (!name.trim() || !email.trim() || !password || !confirmPassword) {
       toast.error("সব ঘর পূরণ করুন");
       return;
@@ -71,7 +71,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        {/* Registration form */}
+    
         <form onSubmit={handleSignUp} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -139,10 +139,10 @@ export default function SignUpPage() {
           </button>
         </form>
 
-        {/* Divider */}
+        
         <div className="divider text-gray-400 text-xs my-5">অথবা</div>
 
-        {/* Social login */}
+    
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
             type="button"
@@ -170,7 +170,7 @@ export default function SignUpPage() {
           </button>
         </div>
 
-        {/* Login link */}
+        
         <p className="text-center text-sm text-gray-500 mt-6">
           ইতোমধ্যে অ্যাকাউন্ট আছে?{" "}
           <Link
@@ -182,7 +182,7 @@ export default function SignUpPage() {
         </p>
       </div>
 
-      {/* Back to home */}
+      
       <p className="text-center mt-4">
         <Link href="/" className="text-sm text-gray-500 hover:text-green-700">
           ← হোমে ফিরে যান

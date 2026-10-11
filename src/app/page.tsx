@@ -4,7 +4,7 @@ import PriceFallers from "@/components/PriceFallers";
 import AllProducts from "@/components/AllProducts";
 import { type Product } from "@/lib/utils";
 
-// Server Component: fetches products directly from the API
+
 async function getProducts(): Promise<Product[]> {
   const res = await fetch(
     "https://api.api-store.workers.dev/api/bazardor/products",

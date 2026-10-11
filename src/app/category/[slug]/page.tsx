@@ -45,7 +45,7 @@ export default function CategoryPage() {
           return;
         }
 
-        // Category info: try the API, else use the first product's data
+    
         let cat: Category | null = null;
         try {
           const catRes = await fetch(`${API}/categories/${slug}`);
@@ -82,14 +82,14 @@ export default function CategoryPage() {
     };
   }, [slug]);
 
-  // Sort by the numeric price (today), not by Bengali text
+
   const sortedProducts = [...products].sort((a, b) => {
     if (sortBy === "price-asc") return a.today - b.today;
     if (sortBy === "price-desc") return b.today - a.today;
-    return 0; // default: API order
+    return 0; 
   });
 
-  // Loading state: skeleton
+  
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-6">
@@ -108,7 +108,7 @@ export default function CategoryPage() {
     );
   }
 
-  // Empty / invalid slug: 404-style state
+  
   if (error || products.length === 0) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
@@ -128,7 +128,7 @@ export default function CategoryPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
-      {/* Title + icon */}
+
       <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-4">
         <div className="flex items-center gap-4">
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 text-3xl">
@@ -139,13 +139,13 @@ export default function CategoryPage() {
               {category?.nameBn}
             </h1>
             <p className="text-xs text-gray-500">
-              এই ক্যাটাগরির পণ্যের আজকের দাম
+              {toBengaliNumber(products.length)}টি পণ্যের আজকের দাম ও পরিবর্তন
             </p>
           </div>
         </div>
       </div>
 
-      {/* Sort bar (C1) */}
+    
       <div className="bg-white border border-gray-100 rounded-xl px-4 py-3 mb-4 flex justify-end">
         <SortDropdown value={sortBy} onChange={setSortBy} />
       </div>
@@ -154,7 +154,7 @@ export default function CategoryPage() {
         মোট {toBengaliNumber(products.length)}টি পণ্য দেখানো হচ্ছে
       </p>
 
-      {/* Product cards: same card as Home */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {sortedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
