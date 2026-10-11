@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BazarDor (বাজার দর)
 
-## Getting Started
+## Description
 
-First, run the development server:
+BazarDor is a simple website where people can see the daily market prices of common things in Bangladesh, like rice, oil, vegetables, fish, meat, eggs and spices.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technologies Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- DaisyUI
+- Better Auth
+- MongoDB Atlas
+- react-hot-toast
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Shows the top 6 products whose price went up and the top 6 whose price went down today.
+2. A moving price ticker under the navbar that shows name, price and change of products.
+3. Category pages where you can sort products by price (low to high or high to low).
+4. Login and sign up with email and password, Google and GitHub.
+5. Product details page with minimum, maximum and average price and a table of different markets. This page is only for logged in users.
+6. Profile page where the user can see their info and update their name.
+7. Works on mobile, tablet and desktop, with loading skeletons and a 404 page.

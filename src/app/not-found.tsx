@@ -1,0 +1,20 @@
+import Link from "next/link";
+
+export default function NotFound() {
+  return (
+    <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4">
+      <div className="text-7xl mb-4">🔍</div>
+      <p className="text-green-600 font-semibold mb-1">404</p>
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        পেজটি পাওয়া যায়নি
+      </h1>
+      <p className="text-gray-500 mb-6 max-w-md text-sm md:text-base">
+        আপনি যে পেজটি খুঁজছেন সেটি পাওয়া যায়নি। ঠিকানাটি ভুল হতে পারে অথবা
+        পেজটি সরিয়ে ফেলা হয়ে থাকতে পারে।
+      </p>
+      <Link href="/" className="btn btn-success text-white">
+        হোম পেজে ফিরে যান
+      </Link>
+    </div>
+  );
+}
