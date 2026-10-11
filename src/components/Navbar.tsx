@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import PriceTicker from "../components/PriceTicker";
 import { getBanglaDate, type Category } from "@/lib/utils";
+import logoIcon from "@/logo-icon.png";
 
 // Date is empty on the server and real in the browser (avoids new Date() errors)
 const subscribe = () => () => {};
@@ -52,9 +54,14 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-600 text-lg">
-            🛒
-          </span>
+          <Image
+            src={logoIcon}
+            alt="বাজার দর লোগো"
+            width={36}
+            height={36}
+            className="h-9 w-9 rounded-lg object-cover"
+            priority
+          />
           <div>
             <h1 className="text-xl font-bold text-green-700 leading-tight">
               বাজার দর
